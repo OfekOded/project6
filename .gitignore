@@ -1,1 +1,4 @@
+# Owner: Partner A | shared infra - FROZEN after kickoff
 node_modules/
+.env
+dist/
