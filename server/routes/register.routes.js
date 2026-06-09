@@ -11,17 +11,35 @@ const router = express.Router();
 // POST /register   body: { username, password, name, email, phone }
 // Success -> 201 + new user WITHOUT password. Taken username -> 409. Bad body -> 400.
 router.post('/', async (req, res) => {
-  // TODO (B):
-  // 1. validate required fields (username, password, name) -> else 400
-  // 2. if (await registerQueries.usernameExists(username)) -> res.status(409).json({ error: 'username taken' })
-  // 3. const user = await registerQueries.createUserWithPassword({...}, password)
-  // 4. res.status(201).json(user)   // password is never echoed back
+  try {
+    const { username, password, name, email, phone } = req.body;
+
+    // 1. validate required fields (server-side - the client form cannot be trusted)
+    if (!username || !password || !name) {
+      return res.status(400).json({ error: 'username, password and name are required' });
+    }
+
+    // 2. username already taken?
+    if (await registerQueries.usernameExists(username)) {
+      return res.status(409).json({ error: 'username taken' });
+    }
+
+    // 3. create both rows in one transaction and return the user (no password echoed back)
+    const user = await registerQueries.createUserWithPassword(
+      { username, name, email, phone },
+      password
+    );
+    res.status(201).json(user);
+  } catch (err) {
+    console.error('POST /register', err);
+    res.status(500).json({ error: 'server error' });
+  }
 });
 
 module.exports = router;
 
 /* EXAM NOTES:
- * - 409 Conflict = הבקשה תקינה אבל מתנגשת במצב קיים (username תפוס).
- * - ולידציה בצד שרת חובה גם אם הטופס בלקוח בודק - ללקוח אי אפשר להאמין
- *   (כל אחד יכול לשלוח בקשה ישירות ב-postman).
+ * - 409 Conflict = הבקשה תקינה אבל מתנגשת במצב קיים (username תפוס). שונה מ-400 (בקשה פגומה).
+ * - ולידציה בצד שרת חובה גם אם הטופס בלקוח בודק - כל אחד יכול לשלוח בקשה ישירות ב-postman.
+ * - התשובה (201) מחזירה את המשתמש בלי שדה password - הסיסמה לעולם לא יוצאת מהשרת.
  */
