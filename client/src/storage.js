@@ -8,17 +8,25 @@ const KEY = 'currentUser';
 
 // Returns the user object or null. (localStorage holds strings -> JSON.parse)
 export function getCurrentUser() {
-  // TODO (A): read localStorage.getItem(KEY), JSON.parse, handle null
+  const value = localStorage.getItem(KEY);
+  if (!value) return null;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    localStorage.removeItem(KEY);
+    return null;
+  }
 }
 
 // `user` arrives from POST /login WITHOUT a password field - store as-is.
 export function saveCurrentUser(user) {
-  // TODO (A): localStorage.setItem(KEY, JSON.stringify(user))
+  localStorage.setItem(KEY, JSON.stringify(user));
 }
 
 // Logout: remove the key.
 export function clearCurrentUser() {
-  // TODO (A): localStorage.removeItem(KEY)
+  localStorage.removeItem(KEY);
 }
 
 /* EXAM NOTES:

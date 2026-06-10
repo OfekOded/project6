@@ -1,34 +1,70 @@
 /**
  * File: client/src/pages/Todos.jsx
- * Purpose: /users/:username/todos - the active user's todos: list sorted by id with a
- *          completed checkbox, filters (criteria), add / update / delete (stage D).
+ * Purpose: /users/:username/todos - active user's todos page.
  * Owner: Partner A
- * Stage: D (שלב ד)
+ * Stage: D
  */
-import { useState, useEffect } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { API_URL } from '../config';
 import { getCurrentUser } from '../storage';
-import './Todos.css';
+import useTodos from '../hooks/useTodos';
+import TodoForm from '../components/todos/TodoForm';
+import TodoFilters from '../components/todos/TodoFilters';
+import TodoItem from '../components/todos/TodoItem';
+import '../styles/Todos.css';
 
 export default function Todos() {
   const user = getCurrentUser();
+  const {
+    todos,
+    filter,
+    setFilter,
+    loading,
+    loadError,
+    actionError,
+    addTodo,
+    toggleTodo,
+    renameTodo,
+    deleteTodo,
+  } = useTodos(user?.id);
+
+  function handleRename(todo) {
+    const title = window.prompt('Edit todo title', todo.title);
+    if (title === null) return;
+
+    const trimmed = title.trim();
+    if (trimmed) renameTodo(todo, trimmed);
+  }
+
   if (!user) return <Navigate to="/login" replace />;
-
-  // TODO (A): state: todos[], newTitle, filter ('all' | 'done' | 'open')
-
-  // TODO (A): loadTodos() -> GET `${API_URL}/todos?userId=${user.id}` (+ &completed=... per filter)
-  //           server already returns ORDER BY id; call from useEffect on mount + when filter changes
-
-  // TODO (A): handleAdd()        -> POST /todos { userId: user.id, title }   -> reload/append
-  // TODO (A): handleToggle(todo) -> PUT /todos/:id { completed: !todo.completed }
-  // TODO (A): handleRename(todo) -> PUT /todos/:id { title }
-  // TODO (A): handleDelete(id)   -> DELETE /todos/:id -> remove from state
 
   return (
     <div className="todos-page">
-      {/* TODO (A): filter controls, add form, <ul> of todos -
-          each row: <input type="checkbox" checked={!!todo.completed} ...> + title + edit/delete buttons */}
+      <header className="todos-header">
+        <Link className="back-link" to={`/users/${user.username}`}>Back</Link>
+        <h1>Todos</h1>
+      </header>
+
+      <TodoForm onAdd={addTodo} />
+      <TodoFilters filter={filter} onChange={setFilter} />
+
+      {actionError && <p className="error-text">{actionError}</p>}
+      {loading && <p className="muted">Loading todos...</p>}
+      {loadError && <p className="error-text">{loadError}</p>}
+      {!loading && !loadError && todos.length === 0 && (
+        <p className="muted">No todos match this view.</p>
+      )}
+
+      <ul className="todo-list">
+        {todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={toggleTodo}
+            onRename={handleRename}
+            onDelete={deleteTodo}
+          />
+        ))}
+      </ul>
     </div>
   );
 }

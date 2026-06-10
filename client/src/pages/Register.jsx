@@ -2,13 +2,14 @@
  * File: client/src/pages/Register.jsx
  * Purpose: /register page - form -> POST /register -> on success save user + navigate to /users/:username.
  * Owner: Partner B
- * Stage: C (שלב ג)
+ * Stage: C
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../config';
+import { postJson } from '../apiClient';
 import { saveCurrentUser } from '../storage';
-import './Register.css';
+import FormField from '../components/forms/FormField';
+import '../styles/Register.css';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export default function Register() {
     e.preventDefault();
     setErrorMessage('');
 
-    // Client-side checks (the server validates again - never trust the client alone).
     if (!username || !password || !name) {
       setErrorMessage('Username, password and name are required.');
       return;
@@ -38,26 +38,16 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      const res = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, name, email, phone }),
-      });
-
-      if (res.status === 409) {
-        setErrorMessage('That username is already taken. Please choose another.');
-        return;
-      }
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setErrorMessage(data.error || 'Registration failed. Please try again.');
-        return;
-      }
-
-      const user = await res.json(); // the new user, WITHOUT a password
+      const user = await postJson('/register', { username, password, name, email, phone });
       saveCurrentUser(user);
       navigate(`/users/${user.username}`);
-    } catch {
+    } catch (err) {
+      if (err.status) {
+        setErrorMessage(
+          err.status === 409 ? 'That username is already taken. Please choose another.' : err.message
+        );
+        return;
+      }
       setErrorMessage('Cannot reach the server. Is it running?');
     } finally {
       setSubmitting(false);
@@ -69,46 +59,23 @@ export default function Register() {
       <form className="register-card card" onSubmit={handleSubmit}>
         <h1 className="register-title">Create your account</h1>
 
-        <div className="form-field">
-          <label htmlFor="reg-username">Username</label>
-          <input id="reg-username" className="input" value={username}
-                 onChange={(e) => setUsername(e.target.value)} autoComplete="username" />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="reg-name">Full name</label>
-          <input id="reg-name" className="input" value={name}
-                 onChange={(e) => setName(e.target.value)} autoComplete="name" />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="reg-password">Password</label>
-          <input id="reg-password" className="input" type="password" value={password}
-                 onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="reg-password2">Confirm password</label>
-          <input id="reg-password2" className="input" type="password" value={passwordVerify}
-                 onChange={(e) => setPasswordVerify(e.target.value)} autoComplete="new-password" />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="reg-email">Email (optional)</label>
-          <input id="reg-email" className="input" type="email" value={email}
-                 onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-        </div>
-
-        <div className="form-field">
-          <label htmlFor="reg-phone">Phone (optional)</label>
-          <input id="reg-phone" className="input" value={phone}
-                 onChange={(e) => setPhone(e.target.value)} autoComplete="tel" />
-        </div>
+        <FormField id="reg-username" label="Username" value={username}
+                   onChange={setUsername} autoComplete="username" />
+        <FormField id="reg-name" label="Full name" value={name}
+                   onChange={setName} autoComplete="name" />
+        <FormField id="reg-password" label="Password" type="password" value={password}
+                   onChange={setPassword} autoComplete="new-password" />
+        <FormField id="reg-password2" label="Confirm password" type="password" value={passwordVerify}
+                   onChange={setPasswordVerify} autoComplete="new-password" />
+        <FormField id="reg-email" label="Email (optional)" type="email" value={email}
+                   onChange={setEmail} autoComplete="email" />
+        <FormField id="reg-phone" label="Phone (optional)" value={phone}
+                   onChange={setPhone} autoComplete="tel" />
 
         {errorMessage && <p className="error-text">{errorMessage}</p>}
 
         <button type="submit" className="btn btn-primary" disabled={submitting}>
-          {submitting ? 'Creating…' : 'Create account'}
+          {submitting ? 'Creating...' : 'Create account'}
         </button>
 
         <p className="muted">

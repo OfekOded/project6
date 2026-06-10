@@ -1,0 +1,60 @@
+/*
+  File: client/src/styles/Home.css | Owner: Partner A | Stage: C
+  Purpose: styles for Home + Info pages (both owned by Partner A).
+*/
+.home-page,
+.info-page {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.home-card {
+  margin-top: 10vh;
+}
+
+.home-card h1 {
+  margin-bottom: 1rem;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.info-card h1 {
+  margin-bottom: 1rem;
+}
+
+.info-list {
+  margin: 0;
+}
+
+.info-list div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-list div:last-child {
+  border-bottom: 0;
+}
+
+.info-list dt {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.info-list dd {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .info-list div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}

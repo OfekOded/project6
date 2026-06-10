@@ -7,20 +7,71 @@
  */
 import { useState, useEffect } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { API_URL } from '../config';
+import { getJson } from '../apiClient';
 import { getCurrentUser } from '../storage';
-import './Home.css';
+import '../styles/Home.css';
 
 export default function Info() {
   const user = getCurrentUser();
-  if (!user) return <Navigate to="/login" replace />;
+  const userId = user?.id;
 
-  // TODO (A): useEffect -> fetch(`${API_URL}/users/${user.id}`) to show FRESH data from the DB
-  // (could also render straight from LS, but a GET demonstrates the API - better for grading).
+  const [info, setInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (!userId) return;
+
+    async function loadInfo() {
+      setLoading(true);
+      setErrorMessage('');
+      try {
+        setInfo(await getJson(`/users/${userId}`));
+      } catch {
+        setErrorMessage('Could not load user info. Is the server running?');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadInfo();
+  }, [userId]);
+
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="info-page">
-      {/* TODO (A): render id / username / name / email / phone + <Link> back to home */}
+      <section className="info-card card">
+        <Link className="back-link" to={`/users/${user.username}`}>Back</Link>
+        <h1>Info</h1>
+
+        {loading && <p className="muted">Loading info...</p>}
+        {errorMessage && <p className="error-text">{errorMessage}</p>}
+        {!loading && info && (
+          <dl className="info-list">
+            <div>
+              <dt>ID</dt>
+              <dd>{info.id}</dd>
+            </div>
+            <div>
+              <dt>Username</dt>
+              <dd>{info.username}</dd>
+            </div>
+            <div>
+              <dt>Name</dt>
+              <dd>{info.name}</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd>{info.email || '-'}</dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd>{info.phone || '-'}</dd>
+            </div>
+          </dl>
+        )}
+      </section>
     </div>
   );
 }

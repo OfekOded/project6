@@ -1,8 +1,8 @@
 /*
-  File: client/src/pages/Register.css | Owner: Partner B | Stage: C
-  Purpose: styles for the Register page only.
+  File: client/src/styles/Login.css | Owner: Partner A | Stage: C
+  Purpose: styles for the Login page only.
 */
-.register-page {
+.login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -10,22 +10,22 @@
   padding: 1.5rem;
 }
 
-.register-card {
+.login-card {
   width: 100%;
   max-width: 380px;
 }
 
-.register-title {
+.login-title {
   text-align: center;
   margin-bottom: 1.25rem;
 }
 
-.register-card .btn-primary {
+.login-card .btn-primary {
   width: 100%;
   margin-top: 0.25rem;
 }
 
-.register-card .muted {
+.login-card .muted {
   text-align: center;
   margin: 0.9rem 0 0;
 }

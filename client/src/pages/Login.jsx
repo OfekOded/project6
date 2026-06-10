@@ -7,30 +7,65 @@
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { API_URL } from '../config';
+import { postJson } from '../apiClient';
 import { saveCurrentUser } from '../storage';
-import './Login.css';
+import FormField from '../components/forms/FormField';
+import '../styles/Login.css';
 
 export default function Login() {
-  // TODO (A): useState for username, password, errorMessage
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   async function handleSubmit(e) {
-    // TODO (A):
-    // e.preventDefault()
-    // const res = await fetch(`${API_URL}/login`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ username, password }),
-    // });
-    // if (!res.ok) -> setErrorMessage(...) and STAY here (401 from server)
-    // else -> const user = await res.json(); saveCurrentUser(user);
-    //         navigate(`/users/${user.username}`)
+    e.preventDefault();
+    setErrorMessage('');
+
+    if (!username || !password) {
+      setErrorMessage('Username and password are required.');
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const user = await postJson('/login', { username, password });
+      saveCurrentUser(user);
+      navigate(`/users/${user.username}`);
+    } catch (err) {
+      if (err.status) {
+        setErrorMessage(err.status === 401 ? 'Wrong username or password.' : err.message);
+        return;
+      }
+      setErrorMessage('Cannot reach the server. Is it running?');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <div className="login-page">
-      {/* TODO (A): <form onSubmit={handleSubmit}> with username + password inputs,
-          submit button, error message area, and <Link to="/register"> for new users */}
+      <form className="login-card card" onSubmit={handleSubmit}>
+        <h1 className="login-title">Log in</h1>
+
+        <FormField id="login-username" label="Username" value={username}
+                   onChange={setUsername} autoComplete="username" />
+
+        <FormField id="login-password" label="Password" type="password" value={password}
+                   onChange={setPassword} autoComplete="current-password" />
+
+        {errorMessage && <p className="error-text">{errorMessage}</p>}
+
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
+          {submitting ? 'Logging in...' : 'Log in'}
+        </button>
+
+        <p className="muted">
+          New user? <Link to="/register">Create an account</Link>
+        </p>
+      </form>
     </div>
   );
 }

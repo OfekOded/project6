@@ -1,0 +1,89 @@
+/*
+  File: client/src/styles/Todos.css | Owner: Partner A | Stage: D
+  Purpose: styles for the Todos page only.
+*/
+.todos-page {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.todos-header {
+  margin-bottom: 1.25rem;
+}
+
+.todo-form {
+  margin-bottom: 1rem;
+}
+
+.todo-add-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.todo-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.todo-check {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+}
+
+.todo-check input {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}
+
+.todo-title {
+  overflow-wrap: anywhere;
+}
+
+.todo-title-done {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.todo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 560px) {
+  .todo-add-row,
+  .todo-item {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .todo-actions {
+    justify-content: flex-start;
+  }
+}
