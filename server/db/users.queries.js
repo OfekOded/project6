@@ -8,12 +8,19 @@ const pool = require('./connection');
 
 // SELECT id, username, name, email, phone FROM users  (explicit columns - no password leak possible)
 async function getAllUsers() {
-  // TODO (A): const [rows] = await pool.query('...'); return rows;
+  const [rows] = await pool.query(
+    'SELECT id, username, name, email, phone FROM users ORDER BY id'
+  );
+  return rows;
 }
 
 // Single user by id (used by the Info page). Return undefined if not found.
 async function getUserById(id) {
-  // TODO (A): SELECT ... WHERE id = ?   (parameterized!)
+  const [rows] = await pool.query(
+    'SELECT id, username, name, email, phone FROM users WHERE id = ?',
+    [id]
+  );
+  return rows[0];
 }
 
 module.exports = { getAllUsers, getUserById };

@@ -3,7 +3,7 @@
 -- Owner: Partner A | Stage: A (שלב א)
 USE fullstack6;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   name VARCHAR(100) NOT NULL,
@@ -12,17 +12,31 @@ CREATE TABLE users (
 );
 -- (jsonplaceholder has more fields - address/company/website - the course allows trimming.)
 
-CREATE TABLE passwords (
+CREATE TABLE IF NOT EXISTS passwords (
   user_id INT PRIMARY KEY,
   password VARCHAR(100) NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- TODO (Partner A): seed 3-4 users with FIXED ids 1..4 (Partner B's seeds reference them!)
--- INSERT INTO users (username, name, email, phone) VALUES
---   ('shlomo', 'Shlomo Kipnis', 'shlomo@example.com', '050-0000001'),
---   (...);
--- INSERT INTO passwords (user_id, password) VALUES (1, '1234'), (...);
+-- Seed with FIXED ids 1..4 because Partner B's posts/comments seeds reference them.
+INSERT INTO users (id, username, name, email, phone) VALUES
+  (1, 'shlomo', 'Shlomo Kipnis', 'shlomo@example.com', '050-0000001'),
+  (2, 'miriam', 'Miriam Cohen', 'miriam@example.com', '050-0000002'),
+  (3, 'david', 'David Levi', 'david@example.com', '050-0000003'),
+  (4, 'noa', 'Noa Mizrahi', 'noa@example.com', '050-0000004')
+ON DUPLICATE KEY UPDATE
+  username = VALUES(username),
+  name = VALUES(name),
+  email = VALUES(email),
+  phone = VALUES(phone);
+
+INSERT INTO passwords (user_id, password) VALUES
+  (1, '1234'),
+  (2, '1234'),
+  (3, '1234'),
+  (4, '1234')
+ON DUPLICATE KEY UPDATE
+  password = VALUES(password);
 
 -- EXAM NOTES:
 -- * למה טבלת passwords נפרדת? SELECT רגיל על users לעולם לא יכול להחזיר סיסמה בטעות,

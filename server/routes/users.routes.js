@@ -10,13 +10,25 @@ const router = express.Router();
 
 // GET /users -> all users (no passwords - the queries layer never selects them)
 router.get('/', async (req, res) => {
-  // TODO (A): try { rows = await usersQueries.getAllUsers(); res.json(rows); }
-  //           catch -> res.status(500).json({ error: 'server error' })
+  try {
+    const users = await usersQueries.getAllUsers();
+    res.json(users);
+  } catch (err) {
+    console.error('GET /users', err);
+    res.status(500).json({ error: 'server error' });
+  }
 });
 
 // GET /users/:id -> single user (Info page). 404 if not found.
 router.get('/:id', async (req, res) => {
-  // TODO (A): req.params.id -> getUserById -> if (!user) return res.status(404)...
+  try {
+    const user = await usersQueries.getUserById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'user not found' });
+    res.json(user);
+  } catch (err) {
+    console.error('GET /users/:id', err);
+    res.status(500).json({ error: 'server error' });
+  }
 });
 
 module.exports = router;

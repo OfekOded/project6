@@ -11,12 +11,23 @@ const router = express.Router();
 // POST /login   body: { username, password }
 // Success -> 200 + user WITHOUT the password field. Failure -> 401 + { error }.
 router.post('/', async (req, res) => {
-  // TODO (A):
-  // 1. validate req.body has username + password -> else 400
-  // 2. const user = await loginQueries.getUserWithPassword(username)
-  // 3. if (!user || user.password !== password) -> res.status(401).json({ error: 'wrong username or password' })
-  //    (same message for both cases - do not reveal whether the username exists)
-  // 4. delete user.password;  res.json(user)
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ error: 'username and password are required' });
+    }
+
+    const user = await loginQueries.getUserWithPassword(username);
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'wrong username or password' });
+    }
+
+    delete user.password;
+    res.json(user);
+  } catch (err) {
+    console.error('POST /login', err);
+    res.status(500).json({ error: 'server error' });
+  }
 });
 
 module.exports = router;
