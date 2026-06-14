@@ -6,7 +6,7 @@ React client + NodeJS/Express server + MySQL database for a jsonplaceholder-styl
 
 - `client/` - React + Vite client.
 - `server/` - Express REST API and MySQL query layer.
-- `server/db/sql/` - database setup scripts. Run them in order from `01_init.sql` to `05_comments.sql`.
+- `server/db/sql/` - database setup scripts. Run them in order from `01_init.sql` to `07_albums_photos.sql`.
 
 ## Setup
 

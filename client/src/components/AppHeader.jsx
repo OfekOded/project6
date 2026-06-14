@@ -32,6 +32,11 @@ export default function AppHeader({ active }) {
           <Link className={`app-nav-link ${active === 'info' ? 'is-active' : ''}`} to={`${base}/info`}>Info</Link>
           <Link className={`app-nav-link ${active === 'todos' ? 'is-active' : ''}`} to={`${base}/todos`}>Todos</Link>
           <Link className={`app-nav-link ${active === 'posts' ? 'is-active' : ''}`} to={`${base}/posts`}>Posts</Link>
+          <Link className={`app-nav-link ${active === 'albums' ? 'is-active' : ''}`} to={`${base}/albums`}>Albums</Link>
+          <Link className={`app-nav-link ${active === 'settings' ? 'is-active' : ''}`} to={`${base}/settings`}>Settings</Link>
+          {user.is_admin ? (
+            <Link className={`app-nav-link ${active === 'admin' ? 'is-active' : ''}`} to={`${base}/admin`}>Admin</Link>
+          ) : null}
         </nav>
 
         <div className="app-user">

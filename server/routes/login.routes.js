@@ -15,6 +15,9 @@ router.post('/', async (req, res) => {
     if (!user || user.password !== password) {
       return res.status(401).json({ error: 'wrong username or password' });
     }
+    if (user.blocked) {
+      return res.status(403).json({ error: 'this account is blocked' });
+    }
 
     delete user.password;
     res.json(user);

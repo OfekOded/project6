@@ -159,6 +159,7 @@ textarea.input { resize: vertical; }
   color: var(--primary);
 }
 .badge-success { background: rgba(22, 163, 74, 0.12); color: var(--success); }
+.badge-danger { background: rgba(var(--danger-rgb), 0.12); color: var(--danger); }
 .badge-muted { background: var(--surface-2); color: var(--muted); }
 
 /* ---- Password field: input + Show/Hide toggle ---- */
@@ -213,6 +214,15 @@ textarea.input { resize: vertical; }
   margin: 0.6rem 0;
   background: rgba(var(--danger-rgb), 0.08);
   border: 1px solid rgba(var(--danger-rgb), 0.22);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+}
+.success-text {
+  color: var(--success);
+  font-size: 0.9rem;
+  margin: 0.6rem 0;
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.22);
   padding: 0.5rem 0.7rem;
   border-radius: var(--radius-sm);
 }

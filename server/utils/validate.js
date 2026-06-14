@@ -15,4 +15,25 @@ function parseBool01(value) {
   return null;
 }
 
-module.exports = { parseId, parseBool01 };
+// Build safe ORDER BY / LIMIT / OFFSET clauses from jsonplaceholder-style query
+// params (_sort, _order, _limit, _page). The sort column is whitelisted (column
+// names cannot be parameterized) and limit/offset are validated integers, so the
+// returned strings are safe to concatenate.
+function parseListOptions(query = {}, { allowedSort = [], defaultSort = 'id' } = {}) {
+  const sortCol = query._sort && allowedSort.includes(query._sort) ? query._sort : defaultSort;
+  const order = String(query._order || '').toLowerCase() === 'desc' ? 'DESC' : 'ASC';
+  const orderClause = ` ORDER BY ${sortCol} ${order}`;
+
+  let limitClause = '';
+  const limitRaw = parseId(query._limit);
+  if (limitRaw) {
+    const limit = Math.min(limitRaw, 100); // cap so a client cannot ask for everything at once
+    const page = parseId(query._page) || 1;
+    const offset = (page - 1) * limit;
+    limitClause = ` LIMIT ${limit} OFFSET ${offset}`;
+  }
+
+  return { orderClause, limitClause };
+}
+
+module.exports = { parseId, parseBool01, parseListOptions };
