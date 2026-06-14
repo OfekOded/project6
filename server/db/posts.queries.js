@@ -1,31 +1,36 @@
 const pool = require('./connection');
 
-// Explicit column list (never SELECT *) - shared by all reads here.
-const POST_COLUMNS = 'id, user_id, title, body, created_at';
+// Posts are returned together with their author (JOIN users), the same way comments are -
+// so the "All posts" view can show who wrote each one. user_id is still included for ownership checks.
+const POST_SELECT = `
+  SELECT p.id, p.user_id, p.title, p.body, p.created_at,
+         u.username AS user_username, u.name AS user_name
+  FROM posts p
+  JOIN users u ON u.id = p.user_id
+`;
 
-// List with optional filters: { userId } -> ORDER BY id (stage E: sorted by id)
+// List with optional filter { userId }. No userId -> every post (the "All posts" view).
 async function getPosts(filters = {}) {
-  let sql = `SELECT ${POST_COLUMNS} FROM posts`;
+  let sql = POST_SELECT;
   const params = [];
 
-  // Build the WHERE dynamically so the same function serves /posts and /posts?userId=
   if (filters.userId !== undefined && filters.userId !== null && filters.userId !== '') {
-    sql += ' WHERE user_id = ?';
+    sql += ' WHERE p.user_id = ?';
     params.push(filters.userId);
   }
 
-  sql += ' ORDER BY id';
+  sql += ' ORDER BY p.id';
   const [rows] = await pool.execute(sql, params);
   return rows;
 }
 
-// Single post incl. user_id - needed for ownership checks in the route. undefined if not found.
+// Single post incl. user_id + author. undefined if not found.
 async function getPostById(id) {
-  const [rows] = await pool.execute(`SELECT ${POST_COLUMNS} FROM posts WHERE id = ?`, [id]);
+  const [rows] = await pool.execute(`${POST_SELECT} WHERE p.id = ?`, [id]);
   return rows[0];
 }
 
-// Insert then re-fetch the created row (so the caller gets id + created_at the DB generated).
+// Insert then re-fetch the created row (so the caller gets id, created_at and the author).
 async function createPost({ userId, title, body }) {
   const [result] = await pool.execute(
     'INSERT INTO posts (user_id, title, body) VALUES (?, ?, ?)',
@@ -40,14 +45,13 @@ async function updatePost(id, { title, body }) {
   const params = [];
   if (title !== undefined) { fields.push('title = ?'); params.push(title); }
   if (body !== undefined) { fields.push('body = ?'); params.push(body); }
-  if (fields.length === 0) return getPostById(id); // nothing to change
+  if (fields.length === 0) return getPostById(id);
 
   params.push(id);
   await pool.execute(`UPDATE posts SET ${fields.join(', ')} WHERE id = ?`, params);
   return getPostById(id);
 }
 
-// Physical delete. Returns affectedRows so the route can answer 404 when nothing matched.
 async function deletePost(id) {
   const [result] = await pool.execute('DELETE FROM posts WHERE id = ?', [id]);
   return result.affectedRows;

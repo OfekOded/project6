@@ -10,7 +10,8 @@ import '../styles/Posts.css';
 export default function Posts() {
   const user = getCurrentUser();
   const [openPostId, setOpenPostId] = useState(null);
-  const { posts, loading, loadError, actionError, addPost, savePost, deletePost } = usePosts(user?.id);
+  const [scope, setScope] = useState('mine');
+  const { posts, loading, loadError, actionError, addPost, savePost, deletePost } = usePosts(user?.id, scope);
 
   async function handleDelete(post) {
     if (!window.confirm('Delete this post and its comments?')) return;
@@ -36,11 +37,20 @@ export default function Posts() {
 
         <PostForm onAdd={addPost} />
 
+        <div className="posts-scope" aria-label="Posts filter">
+          <button type="button" className={`btn ${scope === 'mine' ? 'btn-primary' : 'btn-ghost'}`}
+                  onClick={() => setScope('mine')}>My posts</button>
+          <button type="button" className={`btn ${scope === 'all' ? 'btn-primary' : 'btn-ghost'}`}
+                  onClick={() => setScope('all')}>All posts</button>
+        </div>
+
         {actionError && <p className="error-text">{actionError}</p>}
         {loading && <p className="muted">Loading posts...</p>}
         {loadError && <p className="error-text">{loadError}</p>}
         {!loading && !loadError && posts.length === 0 && (
-          <p className="muted">No posts yet. Write your first one above.</p>
+          <p className="muted">
+            {scope === 'mine' ? 'No posts yet. Write your first one above.' : 'No posts to show.'}
+          </p>
         )}
 
         <ul className="post-list">

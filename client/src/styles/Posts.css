@@ -2,6 +2,13 @@
 .post-form h2 { margin-bottom: 0.9rem; }
 .post-form .btn-primary { margin-top: 0.25rem; }
 
+.posts-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
 .post-list {
   list-style: none;
   margin: 0;

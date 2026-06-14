@@ -1,19 +1,23 @@
 import { useState, useEffect } from 'react';
 import { getJson, postJson, putJson, deleteJson } from '../apiClient';
 
-export default function usePosts(userId) {
+// scope: 'mine' -> only the active user's posts (default view), 'all' -> everyone's posts.
+export default function usePosts(userId, scope = 'mine') {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [actionError, setActionError] = useState('');
 
+  function listUrl() {
+    return scope === 'all' ? '/posts' : `/posts?userId=${userId}`;
+  }
+
   async function loadPosts() {
     if (!userId) return;
-
     setLoading(true);
     setLoadError('');
     try {
-      setPosts(await getJson(`/posts?userId=${userId}`));
+      setPosts(await getJson(listUrl()));
     } catch {
       setLoadError('Could not load posts. Is the server running?');
     } finally {
@@ -24,13 +28,12 @@ export default function usePosts(userId) {
   useEffect(() => {
     let active = true;
 
-    async function loadUserPosts() {
+    async function loadList() {
       if (!userId) return;
-
       setLoading(true);
       setLoadError('');
       try {
-        const data = await getJson(`/posts?userId=${userId}`);
+        const data = await getJson(scope === 'all' ? '/posts' : `/posts?userId=${userId}`);
         if (active) setPosts(data);
       } catch {
         if (active) setLoadError('Could not load posts. Is the server running?');
@@ -39,9 +42,9 @@ export default function usePosts(userId) {
       }
     }
 
-    loadUserPosts();
+    loadList();
     return () => { active = false; };
-  }, [userId]);
+  }, [userId, scope]);
 
   async function addPost({ title, body }) {
     if (!userId) return false;

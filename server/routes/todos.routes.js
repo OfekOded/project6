@@ -5,7 +5,7 @@ const router = express.Router();
 
 // GET /todos
 // GET /todos?userId=1            (the client uses this for the active user's list)
-// GET /todos?userId=1&completed=1  ("לפי קריטריונים ו/או שאילתות" - stage D)
+// GET /todos?userId=1&completed=1  (filter by criteria / query params)
 router.get('/', async (req, res) => {
   try {
     // Validate the OPTIONAL filters at the boundary - reject bad values with 400.

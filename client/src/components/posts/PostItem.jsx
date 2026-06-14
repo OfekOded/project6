@@ -12,6 +12,7 @@ export default function PostItem({
   const [editing, setEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(post.title);
   const [editBody, setEditBody] = useState(post.body);
+  const isOwner = post.user_id === currentUser.id;
 
   function startEdit() {
     setEditing(true);
@@ -52,13 +53,13 @@ export default function PostItem({
         <>
           <h3 className="post-title">{post.title}</h3>
           <p className="post-body">{post.body}</p>
-          <div className="post-meta muted">{formatDate(post.created_at)}</div>
+          <div className="post-meta muted">by {post.user_name} · {formatDate(post.created_at)}</div>
           <div className="post-actions">
             <button className="btn btn-ghost" onClick={() => onToggleComments(post.id)}>
               {commentsOpen ? 'Hide comments' : 'Show comments'}
             </button>
-            <button className="btn btn-ghost" onClick={startEdit}>Edit</button>
-            <button className="btn btn-danger" onClick={() => onDelete(post)}>Delete</button>
+            {isOwner && <button className="btn btn-ghost" onClick={startEdit}>Edit</button>}
+            {isOwner && <button className="btn btn-danger" onClick={() => onDelete(post)}>Delete</button>}
           </div>
           {commentsOpen && (
             <Comments postId={post.id} currentUser={currentUser} />

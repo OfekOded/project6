@@ -4,8 +4,8 @@ const { parseId } = require('../utils/validate');
 const router = express.Router();
 
 // Resolve the requester and confirm they are an admin. Returns the admin user, or null.
-// (Course-level identity model: the client declares who it is. A production app would
-//  read the identity from a signed session/token instead of a query/body field.)
+// Identity comes from the request (the client declares who it is); a production app would
+// read it from a signed session/token instead of a query/body field.
 async function getAdmin(adminIdRaw) {
   const adminId = parseId(adminIdRaw);
   if (adminId === null) return null;
