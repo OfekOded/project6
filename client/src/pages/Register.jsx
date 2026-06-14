@@ -2,7 +2,7 @@
  * File: client/src/pages/Register.jsx
  * Purpose: /register page - form -> POST /register -> on success save user + navigate to /users/:username.
  * Owner: Partner B
- * Stage: C
+ * Stage: C + Final polish (brand header, password rules + clearer help, Show/Hide password)
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,6 +10,9 @@ import { postJson } from '../apiClient';
 import { saveCurrentUser } from '../storage';
 import FormField from '../components/forms/FormField';
 import '../styles/Register.css';
+
+// Keep this in sync with the server (register.routes.js PASSWORD_MIN).
+const PASSWORD_MIN = 6;
 
 export default function Register() {
   const navigate = useNavigate();
@@ -28,11 +31,15 @@ export default function Register() {
     setErrorMessage('');
 
     if (!username || !password || !name) {
-      setErrorMessage('Username, password and name are required.');
+      setErrorMessage('Username, full name and password are required.');
+      return;
+    }
+    if (password.length < PASSWORD_MIN) {
+      setErrorMessage(`Password must be at least ${PASSWORD_MIN} characters long.`);
       return;
     }
     if (password !== passwordVerify) {
-      setErrorMessage('The two passwords do not match.');
+      setErrorMessage('The two passwords do not match. Please type the same one twice.');
       return;
     }
 
@@ -57,16 +64,32 @@ export default function Register() {
   return (
     <div className="register-page">
       <form className="register-card card" onSubmit={handleSubmit}>
-        <h1 className="register-title">Create your account</h1>
+        <div className="auth-brand">
+          <span className="auth-logo" aria-hidden="true">
+            {/* user-plus icon */}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                 strokeLinecap="round" strokeLinejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M19 8v6M22 11h-6" />
+            </svg>
+          </span>
+          <h1 className="register-title">Create your account</h1>
+          <p className="auth-subtitle">It only takes a moment. Fields marked optional can be left blank.</p>
+        </div>
 
         <FormField id="reg-username" label="Username" value={username}
-                   onChange={setUsername} autoComplete="username" />
+                   onChange={setUsername} autoComplete="username"
+                   hint="This is the name you will log in with. It must be unique." />
         <FormField id="reg-name" label="Full name" value={name}
-                   onChange={setName} autoComplete="name" />
+                   onChange={setName} autoComplete="name"
+                   hint="Shown on your profile and next to your posts." />
         <FormField id="reg-password" label="Password" type="password" value={password}
-                   onChange={setPassword} autoComplete="new-password" />
+                   onChange={setPassword} autoComplete="new-password"
+                   hint={`At least ${PASSWORD_MIN} characters. Use the eye button to check it.`} />
         <FormField id="reg-password2" label="Confirm password" type="password" value={passwordVerify}
-                   onChange={setPasswordVerify} autoComplete="new-password" />
+                   onChange={setPasswordVerify} autoComplete="new-password"
+                   hint="Type the same password again to avoid typos." />
         <FormField id="reg-email" label="Email (optional)" type="email" value={email}
                    onChange={setEmail} autoComplete="email" />
         <FormField id="reg-phone" label="Phone (optional)" value={phone}

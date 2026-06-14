@@ -1,6 +1,6 @@
 /*
-  File: client/src/styles/Register.css | Owner: Partner B | Stage: C
-  Purpose: styles for the Register page only.
+  File: client/src/styles/Register.css | Owner: Partner B | Stage: C + Final polish
+  Purpose: styles for the Register page only. Shared brand/field classes live in index.css.
 */
 .register-page {
   min-height: 100vh;
@@ -8,21 +8,26 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  /* soft branded glow behind the card */
+  background:
+    radial-gradient(1100px 520px at 50% -10%, rgba(59, 91, 219, 0.14), transparent 60%),
+    var(--bg);
 }
 
 .register-card {
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
+  padding: 2rem 1.75rem;
 }
 
 .register-title {
   text-align: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.25rem;
 }
 
 .register-card .btn-primary {
   width: 100%;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .register-card .muted {

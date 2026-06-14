@@ -8,7 +8,7 @@ const pool = require('./connection');
 
 // true/false - is this username already taken? (users.username is UNIQUE anyway - double check)
 async function usernameExists(username) {
-  const [rows] = await pool.query('SELECT id FROM users WHERE username = ?', [username]);
+  const [rows] = await pool.execute('SELECT id FROM users WHERE username = ?', [username]);
   return rows.length > 0;
 }
 
@@ -19,13 +19,13 @@ async function createUserWithPassword({ username, name, email, phone }, password
   try {
     await conn.beginTransaction();
 
-    const [result] = await conn.query(
+    const [result] = await conn.execute(
       'INSERT INTO users (username, name, email, phone) VALUES (?, ?, ?, ?)',
       [username, name, email ?? null, phone ?? null]
     );
     const id = result.insertId;
 
-    await conn.query('INSERT INTO passwords (user_id, password) VALUES (?, ?)', [id, password]);
+    await conn.execute('INSERT INTO passwords (user_id, password) VALUES (?, ?)', [id, password]);
 
     await conn.commit();
     return { id, username, name, email: email ?? null, phone: phone ?? null };

@@ -3,7 +3,7 @@
  * Purpose: /login page - form -> POST /login -> save user in Local Storage -> navigate to /users/:username.
  *          Failed login: show message and STAY on /login (stage C requirement).
  * Owner: Partner A
- * Stage: C (שלב ג)
+ * Stage: C (שלב ג) + Final polish (brand header, clearer help, Show/Hide password)
  */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -25,7 +25,7 @@ export default function Login() {
     setErrorMessage('');
 
     if (!username || !password) {
-      setErrorMessage('Username and password are required.');
+      setErrorMessage('Please enter both your username and password.');
       return;
     }
 
@@ -48,13 +48,26 @@ export default function Login() {
   return (
     <div className="login-page">
       <form className="login-card card" onSubmit={handleSubmit}>
-        <h1 className="login-title">Log in</h1>
+        <div className="auth-brand">
+          <span className="auth-logo" aria-hidden="true">
+            {/* lock icon */}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                 strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </span>
+          <h1 className="login-title">Welcome back</h1>
+          <p className="auth-subtitle">Sign in with your username and password to continue.</p>
+        </div>
 
         <FormField id="login-username" label="Username" value={username}
-                   onChange={setUsername} autoComplete="username" />
+                   onChange={setUsername} autoComplete="username"
+                   hint="The username you chose when you registered." />
 
         <FormField id="login-password" label="Password" type="password" value={password}
-                   onChange={setPassword} autoComplete="current-password" />
+                   onChange={setPassword} autoComplete="current-password"
+                   hint="Use the eye button to check what you typed." />
 
         {errorMessage && <p className="error-text">{errorMessage}</p>}
 
@@ -63,7 +76,7 @@ export default function Login() {
         </button>
 
         <p className="muted">
-          New user? <Link to="/register">Create an account</Link>
+          New here? <Link to="/register">Create an account</Link>
         </p>
       </form>
     </div>

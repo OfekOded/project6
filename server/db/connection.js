@@ -21,6 +21,6 @@ module.exports = pool;
 /* EXAM NOTES:
  * - למה pool ולא connection בודד? ה-pool מחזיק כמה חיבורים פתוחים וממחזר אותם,
  *   כך שכמה בקשות במקביל לא נחנקות ואין צורך לפתוח/לסגור חיבור בכל שאילתה.
- * - mysql2/promise מאפשר async/await:  const [rows] = await pool.query(...)
+ * - mysql2/promise מאפשר async/await:  const [rows] = await pool.execute(...)
  * - פרטי החיבור ב-.env ולא בקוד: סודות לא נכנסים ל-Git, וכל סטודנט מגדיר סביבה משלו.
  */

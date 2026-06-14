@@ -106,6 +106,50 @@ textarea.input { resize: vertical; }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn-ghost:hover:not(:disabled) { background: #f1f3f5; }
 
+/* ---- Password field: input + Show/Hide toggle ---- */
+.input-wrap { position: relative; display: flex; align-items: center; }
+.input-wrap .input { padding-right: 3.6rem; }      /* room so text never sits under the button */
+.reveal-btn {
+  position: absolute;
+  right: 0.35rem;
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.3rem 0.45rem;
+  border-radius: 6px;
+}
+.reveal-btn:hover { background: #f1f3f5; }
+.reveal-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+
+/* ---- Small helper text under a form field ---- */
+.field-hint { color: var(--muted); font-size: 0.8rem; margin: 0.1rem 0 0; }
+
+/* ---- Auth pages (Login / Register) shared brand header ---- */
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.auth-logo {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--primary);
+  color: #fff;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 6px 16px rgba(59, 91, 219, 0.35);
+}
+.auth-logo svg { width: 26px; height: 26px; }
+.auth-subtitle { color: var(--muted); font-size: 0.92rem; margin: 0.15rem 0 0; }
+
 /* ---- Utilities ---- */
 .muted { color: var(--muted); font-size: 0.9rem; }
 .error-text { color: var(--danger); font-size: 0.9rem; margin: 0.5rem 0; }

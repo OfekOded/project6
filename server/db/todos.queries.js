@@ -26,12 +26,12 @@ async function getTodos(filters) {
   }
   sql += ' ORDER BY id';
 
-  const [rows] = await pool.query(sql, params);
+  const [rows] = await pool.execute(sql, params);
   return rows;
 }
 
 async function getTodoById(id) {
-  const [rows] = await pool.query(
+  const [rows] = await pool.execute(
     'SELECT id, user_id, title, completed FROM todos WHERE id = ?',
     [id]
   );
@@ -40,7 +40,7 @@ async function getTodoById(id) {
 
 // Returns the created row (use result.insertId, then fetch it)
 async function createTodo({ userId, title }) {
-  const [result] = await pool.query(
+  const [result] = await pool.execute(
     'INSERT INTO todos (user_id, title) VALUES (?, ?)',
     [userId, title]
   );
@@ -63,12 +63,12 @@ async function updateTodo(id, { title, completed }) {
   if (fields.length === 0) return getTodoById(id);
 
   params.push(id);
-  await pool.query(`UPDATE todos SET ${fields.join(', ')} WHERE id = ?`, params);
+  await pool.execute(`UPDATE todos SET ${fields.join(', ')} WHERE id = ?`, params);
   return getTodoById(id);
 }
 
 async function deleteTodo(id) {
-  const [result] = await pool.query('DELETE FROM todos WHERE id = ?', [id]);
+  const [result] = await pool.execute('DELETE FROM todos WHERE id = ?', [id]);
   return result.affectedRows;
 }
 

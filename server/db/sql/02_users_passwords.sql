@@ -30,11 +30,13 @@ ON DUPLICATE KEY UPDATE
   email = VALUES(email),
   phone = VALUES(phone);
 
+-- Seed passwords are 6 chars to satisfy the server password policy (PASSWORD_MIN = 6
+-- in register.routes.js). Login itself does NOT enforce a minimum - it only verifies.
 INSERT INTO passwords (user_id, password) VALUES
-  (1, '1234'),
-  (2, '1234'),
-  (3, '1234'),
-  (4, '1234')
+  (1, '123456'),
+  (2, '123456'),
+  (3, '123456'),
+  (4, '123456')
 ON DUPLICATE KEY UPDATE
   password = VALUES(password);
 

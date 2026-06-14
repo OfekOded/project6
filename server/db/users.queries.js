@@ -8,7 +8,7 @@ const pool = require('./connection');
 
 // SELECT id, username, name, email, phone FROM users  (explicit columns - no password leak possible)
 async function getAllUsers() {
-  const [rows] = await pool.query(
+  const [rows] = await pool.execute(
     'SELECT id, username, name, email, phone FROM users ORDER BY id'
   );
   return rows;
@@ -16,7 +16,7 @@ async function getAllUsers() {
 
 // Single user by id (used by the Info page). Return undefined if not found.
 async function getUserById(id) {
-  const [rows] = await pool.query(
+  const [rows] = await pool.execute(
     'SELECT id, username, name, email, phone FROM users WHERE id = ?',
     [id]
   );
@@ -30,4 +30,6 @@ module.exports = { getAllUsers, getUserById };
  *   סיסמאות לא ידלפו (וממילא הסיסמה בטבלה אחרת - הגנה כפולה).
  * - ה-? בשאילתה = שאילתה פרמטרית: הערך נשלח לדרייבר בנפרד מטקסט ה-SQL,
  *   ולכן קלט זדוני כמו ' OR '1'='1 לא יכול לשנות את השאילתה (מניעת SQL Injection).
+ * - pool.execute (ולא pool.query) = Prepared Statement אמיתי: ה-SQL מהודר פעם אחת בשרת ה-MySQL
+ *   והערכים נשלחים בנפרד. אותה הגנה מפני הזרקה, ויעיל יותר כששאילתה חוזרת על עצמה.
  */

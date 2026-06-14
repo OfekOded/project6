@@ -6,6 +6,7 @@
  */
 const express = require('express');
 const usersQueries = require('../db/users.queries');
+const { parseId } = require('../utils/validate');
 const router = express.Router();
 
 // GET /users -> all users (no passwords - the queries layer never selects them)
@@ -22,7 +23,10 @@ router.get('/', async (req, res) => {
 // GET /users/:id -> single user (Info page). 404 if not found.
 router.get('/:id', async (req, res) => {
   try {
-    const user = await usersQueries.getUserById(req.params.id);
+    const id = parseId(req.params.id);
+    if (id === null) return res.status(400).json({ error: 'invalid id' });
+
+    const user = await usersQueries.getUserById(id);
     if (!user) return res.status(404).json({ error: 'user not found' });
     res.json(user);
   } catch (err) {

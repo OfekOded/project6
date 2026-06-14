@@ -21,19 +21,19 @@ async function getPosts(filters = {}) {
   }
 
   sql += ' ORDER BY id';
-  const [rows] = await pool.query(sql, params);
+  const [rows] = await pool.execute(sql, params);
   return rows;
 }
 
 // Single post incl. user_id - needed for ownership checks in the route. undefined if not found.
 async function getPostById(id) {
-  const [rows] = await pool.query(`SELECT ${POST_COLUMNS} FROM posts WHERE id = ?`, [id]);
+  const [rows] = await pool.execute(`SELECT ${POST_COLUMNS} FROM posts WHERE id = ?`, [id]);
   return rows[0];
 }
 
 // Insert then re-fetch the created row (so the caller gets id + created_at the DB generated).
 async function createPost({ userId, title, body }) {
-  const [result] = await pool.query(
+  const [result] = await pool.execute(
     'INSERT INTO posts (user_id, title, body) VALUES (?, ?, ?)',
     [userId, title, body]
   );
@@ -49,13 +49,13 @@ async function updatePost(id, { title, body }) {
   if (fields.length === 0) return getPostById(id); // nothing to change
 
   params.push(id);
-  await pool.query(`UPDATE posts SET ${fields.join(', ')} WHERE id = ?`, params);
+  await pool.execute(`UPDATE posts SET ${fields.join(', ')} WHERE id = ?`, params);
   return getPostById(id);
 }
 
 // Physical delete. Returns affectedRows so the route can answer 404 when nothing matched.
 async function deletePost(id) {
-  const [result] = await pool.query('DELETE FROM posts WHERE id = ?', [id]);
+  const [result] = await pool.execute('DELETE FROM posts WHERE id = ?', [id]);
   return result.affectedRows;
 }
 
