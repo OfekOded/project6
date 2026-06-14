@@ -1,9 +1,3 @@
-/**
- * File: client/src/main.jsx
- * Purpose: React entry point - mounts <App /> inside BrowserRouter.
- * Owner: Partner B | SHARED INFRA - FROZEN after kickoff
- * Stage: C (שלב ג)
- */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

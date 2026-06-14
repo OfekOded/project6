@@ -1,9 +1,3 @@
-/**
- * File: client/src/components/forms/FormField.jsx
- * Purpose: shared labelled input/textarea. For type="password" it also renders a
- *          Show/Hide toggle, and any field can show a small `hint` below it.
- * Owner: shared (forms)
- */
 import { useState } from 'react';
 
 export default function FormField({

@@ -1,9 +1,3 @@
-/**
- * File: server/routes/register.routes.js
- * Purpose: POST /register - create a new user + password row (stage C).
- * Owner: Partner B
- * Stage: C (שלב ג)
- */
 const express = require('express');
 const registerQueries = require('../db/register.queries');
 const router = express.Router();
@@ -45,9 +39,3 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTES:
- * - 409 Conflict = הבקשה תקינה אבל מתנגשת במצב קיים (username תפוס). שונה מ-400 (בקשה פגומה).
- * - ולידציה בצד שרת חובה גם אם הטופס בלקוח בודק - כל אחד יכול לשלוח בקשה ישירות ב-postman.
- * - התשובה (201) מחזירה את המשתמש בלי שדה password - הסיסמה לעולם לא יוצאת מהשרת.
- */

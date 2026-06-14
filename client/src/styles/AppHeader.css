@@ -1,0 +1,70 @@
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.app-bar-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1.25rem;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text);
+  font-weight: 800;
+}
+.app-brand:hover { text-decoration: none; }
+.app-brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--primary), #8b80ff);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.35);
+}
+.app-brand-logo svg { width: 19px; height: 19px; }
+.app-brand-name { font-size: 1.05rem; letter-spacing: -0.015em; }
+
+.app-nav {
+  display: flex;
+  gap: 0.2rem;
+  margin-left: 0.5rem;
+}
+.app-nav-link {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 8px;
+}
+.app-nav-link:hover { background: var(--surface-2); color: var(--text); text-decoration: none; }
+.app-nav-link.is-active { background: var(--primary-soft); color: var(--primary); }
+
+.app-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.app-user-name { font-weight: 600; font-size: 0.9rem; }
+
+@media (max-width: 640px) {
+  .app-bar-inner { gap: 0.5rem; padding: 0.6rem 0.9rem; }
+  .app-brand-name { display: none; }
+  .app-user-name { display: none; }
+  .app-nav { margin-left: 0.2rem; }
+  .app-nav-link { padding: 0.35rem 0.55rem; font-size: 0.88rem; }
+}

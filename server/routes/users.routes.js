@@ -1,9 +1,3 @@
-/**
- * File: server/routes/users.routes.js
- * Purpose: REST endpoints for /users (jsonplaceholder shape). Read-only at course level.
- * Owner: Partner A
- * Stage: B (שלב ב) + C (עמוד Info)
- */
 const express = require('express');
 const usersQueries = require('../db/users.queries');
 const { parseId } = require('../utils/validate');
@@ -36,8 +30,3 @@ router.get('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTES:
- * - req.params.id מגיע מהנתיב (/users/3); req.query מגיע מ-?key=value; req.body מגוף JSON.
- * - יצירת user נעשית דרך POST /register (כולל סיסמה) - לכן אין כאן POST.
- */

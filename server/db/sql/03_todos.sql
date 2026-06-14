@@ -1,6 +1,3 @@
--- File: server/db/sql/03_todos.sql
--- Purpose: todos table (N:1 to users) + seed data.
--- Owner: Partner A | Stage: A (שלב א)
 USE fullstack6;
 
 CREATE TABLE IF NOT EXISTS todos (
@@ -33,5 +30,3 @@ ON DUPLICATE KEY UPDATE
   user_id = VALUES(user_id),
   title = VALUES(title),
   completed = VALUES(completed);
-
--- EXAM NOTE: completed הוא TINYINT(1) - כך MySQL מייצג BOOLEAN. בצד הלקוח זה 0/1.

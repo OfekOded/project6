@@ -1,6 +1,3 @@
--- File: server/db/sql/04_posts.sql
--- Purpose: posts table (N:1 to users) + seed data.
--- Owner: Partner B | Stage: A (שלב א) + E (שלב ה)
 -- Run order: 01 -> 02 -> 03 -> 04 -> 05  (users must exist first)
 USE fullstack6;
 
@@ -22,12 +19,5 @@ INSERT INTO posts (user_id, title, body) VALUES
   (2, 'Weekend plans', 'Going to refactor the queries layer and add proper validation.'),
   (3, 'Reading list', 'Three articles on indexing and one on transactions. Recommended.'),
   (3, 'Bug of the day', 'Forgot a parameterized placeholder - fixed it in five minutes.'),
-  (4, 'Quick note', 'Comments now cascade-delete with their post. Neat.'),
-  (4, 'Status update', 'Stage E ownership checks are in and tested in Postman.');
-
--- EXAM NOTES:
--- * user_id הוא FK ל-users עם ON DELETE CASCADE: מחיקת משתמש מוחקת אוטומטית את כל הפוסטים שלו.
--- * body הוא TEXT (ולא VARCHAR) כי תוכן פוסט יכול להיות ארוך מ-255 תווים.
--- * created_at עם DEFAULT CURRENT_TIMESTAMP: ה-DB ממלא את הזמן לבד בכל INSERT,
---   אין צורך לשלוח אותו מהקוד. הלקוח מציג אותו בפורמט מקומי.
--- * הקריאות מסודרות ORDER BY id (דרישת שלב ה) - הסדר יציב ולא תלוי בסדר הכנסה פנימי.
+  (4, 'Quick note', 'Comments now cascade-delete with their post.'),
+  (4, 'Status update', 'Ownership checks are in and tested.');

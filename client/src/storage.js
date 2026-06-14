@@ -1,9 +1,3 @@
-/**
- * File: client/src/storage.js
- * Purpose: the only place that touches Local Storage (current logged-in user).
- * Owner: Partner A
- * Stage: C (שלב ג)
- */
 const KEY = 'currentUser';
 
 // Returns the user object or null. (localStorage holds strings -> JSON.parse)
@@ -28,9 +22,3 @@ export function saveCurrentUser(user) {
 export function clearCurrentUser() {
   localStorage.removeItem(KEY);
 }
-
-/* EXAM NOTES:
- * - Local Storage שורד רענון וסגירת דפדפן - לכן משתמש נשאר מחובר עד Logout (דרישת שלב ג).
- * - לעולם לא שומרים בו סיסמה - השרת ממילא לא מחזיר אותה.
- * - ריכוז הגישה ל-LS בקובץ אחד = מקום אחד לתקן אם משנים מבנה.
- */

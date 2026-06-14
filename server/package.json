@@ -2,7 +2,7 @@
   "name": "project6-server",
   "version": "1.0.0",
   "private": true,
-  "description": "Express + MySQL REST API (jsonplaceholder-style). Owner: Partner A (deps are FROZEN - whitelist only).",
+  "description": "Express + MySQL REST API.",
   "main": "server.js",
   "scripts": {
     "dev": "node --watch server.js",

@@ -1,9 +1,3 @@
-/**
- * File: server/routes/comments.routes.js
- * Purpose: full REST for /comments + ownership checks (stage E).
- * Owner: Partner B
- * Stage: B (שלב ב) + E (שלב ה) + Final polish (input validation)
- */
 const express = require('express');
 const commentsQueries = require('../db/comments.queries');
 const postsQueries = require('../db/posts.queries');
@@ -97,8 +91,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTE: למה גם /comments וגם /posts/:id/comments? כך בדיוק ב-jsonplaceholder -
- * שתי דרכים לאותו מידע. הראוט השטוח נוח ל-POST/PUT/DELETE, המקונן נוח לקריאה לפי post.
- * שניהם משתמשים באותה פונקציית query (getCommentsByPost) - אין כפילות לוגיקה.
- * parseId על כל id/postId/userId: קלט לא-מספרי נעצר ב-400, ובדיקת הבעלות היא מספר מול מספר. */

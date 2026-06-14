@@ -1,9 +1,3 @@
-/**
- * File: server/db/posts.queries.js
- * Purpose: all SQL for the posts table.
- * Owner: Partner B
- * Stage: B (שלב ב) + E (שלב ה)
- */
 const pool = require('./connection');
 
 // Explicit column list (never SELECT *) - shared by all reads here.
@@ -60,12 +54,3 @@ async function deletePost(id) {
 }
 
 module.exports = { getPosts, getPostById, createPost, updatePost, deletePost };
-
-/* EXAM NOTES:
- * - כל ערך מהמשתמש עובר כ-? (שאילתה פרמטרית): הדרייבר שולח אותו בנפרד מטקסט ה-SQL,
- *   ולכן קלט כמו ' OR '1'='1 לא יכול לשנות את מבנה השאילתה (מניעת SQL Injection).
- * - מחיקת post גוררת מחיקת comments אוטומטית בזכות ON DELETE CASCADE שהוגדר בסכמה -
- *   נקודה טובה להדגים למעריך (למחוק post ב-postman ולראות שהתגובות נעלמו).
- * - createPost/updatePost שולפים מחדש את השורה אחרי הכתיבה כדי להחזיר ללקוח אובייקט מלא
- *   (כולל id ו-created_at) ולא רק "הצלחה".
- */

@@ -1,9 +1,3 @@
-/**
- * File: server/db/users.queries.js
- * Purpose: all SQL for the users table (NEVER touches the passwords table!).
- * Owner: Partner A
- * Stage: B (שלב ב) + C (עמוד Info)
- */
 const pool = require('./connection');
 
 // SELECT id, username, name, email, phone FROM users  (explicit columns - no password leak possible)
@@ -24,12 +18,3 @@ async function getUserById(id) {
 }
 
 module.exports = { getAllUsers, getUserById };
-
-/* EXAM NOTES:
- * - תמיד SELECT עם רשימת עמודות מפורשת, לא SELECT * - כך גם אם מישהו ישנה סכמה,
- *   סיסמאות לא ידלפו (וממילא הסיסמה בטבלה אחרת - הגנה כפולה).
- * - ה-? בשאילתה = שאילתה פרמטרית: הערך נשלח לדרייבר בנפרד מטקסט ה-SQL,
- *   ולכן קלט זדוני כמו ' OR '1'='1 לא יכול לשנות את השאילתה (מניעת SQL Injection).
- * - pool.execute (ולא pool.query) = Prepared Statement אמיתי: ה-SQL מהודר פעם אחת בשרת ה-MySQL
- *   והערכים נשלחים בנפרד. אותה הגנה מפני הזרקה, ויעיל יותר כששאילתה חוזרת על עצמה.
- */

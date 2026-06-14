@@ -1,9 +1,3 @@
-/**
- * File: server/routes/todos.routes.js
- * Purpose: full REST for /todos - GET (with criteria) / POST / PUT / DELETE (stage D).
- * Owner: Partner A
- * Stage: B (שלב ב) + D (שלב ד) + Final polish (input validation)
- */
 const express = require('express');
 const todosQueries = require('../db/todos.queries');
 const { parseId, parseBool01 } = require('../utils/validate');
@@ -104,10 +98,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTES:
- * - קודי סטטוס בפרויקט: 200 OK, 201 Created (POST מוצלח), 204 No Content (DELETE),
- *   400 Bad Request (ולידציה), 404 Not Found, 500 Internal Server Error.
- * - PUT אצלנו מעדכן את השדות שנשלחו (סמנטית קרוב ל-PATCH - נקודה לדיון בבחינה).
- * - ולידציה (parseId/parseBool01) רצה בכניסה לראוט: קלט פגום נעצר ב-400 לפני ה-DB.
- */

@@ -1,9 +1,3 @@
-/**
- * File: server/db/comments.queries.js
- * Purpose: all SQL for the comments table.
- * Owner: Partner B
- * Stage: B (שלב ב) + E (שלב ה)
- */
 const pool = require('./connection');
 
 // JOIN users so the client gets the commenter's display name without us storing it on the comment.
@@ -55,9 +49,3 @@ module.exports = {
   updateComment,
   deleteComment,
 };
-
-/* EXAM NOTES:
- * - למה JOIN ולא לשמור שם המגיב בטבלת comments? נורמליזציה: שם המשתמש נשמר במקום אחד (users).
- *   כך אין כפילות מידע ואין סכנה שהשם בתגובה "יתיישן" אחרי שינוי פרופיל.
- * - getCommentById מחזיר גם user_id - הראוט משווה אותו ל-userId של המבקש כדי לאכוף בעלות (403).
- */

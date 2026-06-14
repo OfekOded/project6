@@ -1,6 +1,3 @@
--- File: server/db/sql/05_comments.sql
--- Purpose: comments table (N:1 to posts AND to users) + seed data.
--- Owner: Partner B | Stage: A (שלב א) + E (שלב ה)
 USE fullstack6;
 
 CREATE TABLE comments (
@@ -23,10 +20,3 @@ INSERT INTO comments (post_id, user_id, body) VALUES
   (7, 3, 'Cascade delete is underrated.'),
   (7, 1, 'Saves writing cleanup code by hand.'),
   (8, 2, 'Tested it too - 403 on a post that is not mine. Works.');
-
--- EXAM NOTES:
--- * סטייה מ-jsonplaceholder (מודע): שם ל-comment יש name/email כטקסט חופשי. כאן יש user_id
---   (FK ל-users) במקום - כי בשלב ה צריך לדעת מי הבעלים של תגובה כדי לאכוף עריכה/מחיקה.
--- * שם המגיב לא נשמר בטבלה אלא נשלף ב-JOIN ל-users (ראו comments.queries.js) -
---   מקור אמת אחד: אם משתמש משנה שם, התגובות הישנות מציגות את השם המעודכן אוטומטית.
--- * שני FK עם CASCADE: מחיקת post מוחקת את תגובותיו; מחיקת user מוחקת את תגובותיו.

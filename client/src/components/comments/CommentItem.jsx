@@ -35,7 +35,12 @@ export default function CommentItem({ comment, currentUser, onSave, onDelete }) 
         </div>
       ) : (
         <>
-          <div className="comment-author">{comment.user_name || comment.user_username}</div>
+          <div className="comment-head">
+            <span className="avatar avatar-sm" aria-hidden="true">
+              {(comment.user_name || comment.user_username || '?').trim().charAt(0).toUpperCase()}
+            </span>
+            <span className="comment-author">{comment.user_name || comment.user_username}</span>
+          </div>
           <div className="comment-body">{comment.body}</div>
           {comment.user_id === currentUser.id && (
             <div className="comment-actions">

@@ -1,9 +1,3 @@
-/**
- * File: client/src/pages/Register.jsx
- * Purpose: /register page - form -> POST /register -> on success save user + navigate to /users/:username.
- * Owner: Partner B
- * Stage: C + Final polish (brand header, password rules + clearer help, Show/Hide password)
- */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { postJson } from '../apiClient';

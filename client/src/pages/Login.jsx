@@ -1,10 +1,3 @@
-/**
- * File: client/src/pages/Login.jsx
- * Purpose: /login page - form -> POST /login -> save user in Local Storage -> navigate to /users/:username.
- *          Failed login: show message and STAY on /login (stage C requirement).
- * Owner: Partner A
- * Stage: C (שלב ג) + Final polish (brand header, clearer help, Show/Hide password)
- */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { postJson } from '../apiClient';

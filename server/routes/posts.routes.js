@@ -1,9 +1,3 @@
-/**
- * File: server/routes/posts.routes.js
- * Purpose: full REST for /posts incl. nested GET /posts/:id/comments + ownership checks (stage E).
- * Owner: Partner B
- * Stage: B (שלב ב) + E (שלב ה) + Final polish (input validation)
- */
 const express = require('express');
 const postsQueries = require('../db/posts.queries');
 const commentsQueries = require('../db/comments.queries');
@@ -130,14 +124,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTES:
- * - בדיקת בעלות חייבת להיות בשרת. הסתרת כפתור Delete בלקוח היא UX בלבד -
- *   כל אחד יכול לשלוח DELETE ב-postman; רק השרת באמת אוכף (403 Forbidden).
- * - מגבלה כנה (לומר בבחינה): בלי session/JWT השרת "מאמין" ל-userId שהלקוח מצהיר
- *   (בגוף הבקשה ב-PUT, ב-query ב-DELETE). בייצור הזהות נקבעת בשרת מתוך token, לא מהבקשה.
- * - parseId על :id ועל userId: קלט לא-מספרי נעצר ב-400, וההשוואה לבעלות היא מספר מול מספר.
- * - הראוט המקונן /posts/:id/comments חי כאן (קובץ של B) ולכן אין התנגשות עם אף אחד.
- * - הסדר חשוב: '/:id/comments' מוגדר לפני '/:id' לא הכרחי כאן (נתיבים שונים), אבל ככלל
- *   נתיבים ספציפיים קודמים לכלליים כדי שלא "ייבלעו".
- */

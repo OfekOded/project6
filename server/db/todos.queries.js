@@ -1,9 +1,3 @@
-/**
- * File: server/db/todos.queries.js
- * Purpose: all SQL for the todos table.
- * Owner: Partner A
- * Stage: B (שלב ב) + D (שלב ד)
- */
 const pool = require('./connection');
 
 // List with optional filters: { userId, completed } -> WHERE built dynamically, ORDER BY id
@@ -73,10 +67,3 @@ async function deleteTodo(id) {
 }
 
 module.exports = { getTodos, getTodoById, createTodo, updateTodo, deleteTodo };
-
-/* EXAM NOTES:
- * - "מה זו מחיקה?" (שאלה מפורשת במסמך!): כאן מחיקה פיזית (DELETE FROM).
- *   האלטרנטיבה: מחיקה לוגית - עמודת is_deleted, ו-GET שמסנן אותה. יתרונות: שחזור,
- *   היסטוריה, שמירת שלמות FK. חסרונות: כל שאילתה מסתבכת. ראו EXAM_PREP.md סעיף 5.
- * - affectedRows מאפשר להחזיר 404 אם המחיקה/העדכון לא מצאו שורה.
- */

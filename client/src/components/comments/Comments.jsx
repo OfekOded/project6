@@ -1,9 +1,3 @@
-/**
- * File: client/src/components/comments/Comments.jsx
- * Purpose: comments of one post - list and form.
- * Owner: Partner B
- * Stage: E
- */
 import useComments from '../../hooks/useComments';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';

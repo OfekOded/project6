@@ -1,9 +1,3 @@
-/**
- * File: server/routes/login.routes.js
- * Purpose: POST /login - verify username+password against the DB (stage C).
- * Owner: Partner A
- * Stage: C (שלב ג)
- */
 const express = require('express');
 const loginQueries = require('../db/login.queries');
 const router = express.Router();
@@ -31,12 +25,3 @@ router.post('/', async (req, res) => {
 });
 
 module.exports = router;
-
-/* EXAM NOTES (חשוב לבחינה!):
- * - הסיסמה לעולם לא נשלחת חזרה ללקוח ולא נשמרת ב-Local Storage - נמחקת מהאובייקט בשרת.
- * - רמת קורס: השוואת טקסט פשוט מול ה-DB. בעולם אמיתי: bcrypt.hash בהרשמה +
- *   bcrypt.compare בכניסה. hash הוא חד-כיווני + salt ייחודי לכל משתמש, כך שגם דליפת
- *   DB לא חושפת סיסמאות. לא מומש כאן בכוונה - מחוץ לחומר הקורס (whitelist בלבד).
- * - 401 Unauthorized = זהות לא אומתה; 400 = בקשה לא תקינה; 403 = מאומת אבל אסור.
- * - הודעת שגיאה אחידה ("שם משתמש או סיסמה שגויים") כדי לא לחשוף אילו שמות קיימים.
- */
