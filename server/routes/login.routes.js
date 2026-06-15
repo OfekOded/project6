@@ -1,5 +1,6 @@
 const express = require('express');
 const loginQueries = require('../db/login.queries');
+const { verifyPassword } = require('../db/password.util');
 const router = express.Router();
 
 // POST /login   body: { username, password }
@@ -12,7 +13,7 @@ router.post('/', async (req, res) => {
     }
 
     const user = await loginQueries.getUserWithPassword(username);
-    if (!user || user.password !== password) {
+    if (!user || !verifyPassword(password, user.password)) {
       return res.status(401).json({ error: 'wrong username or password' });
     }
     if (user.blocked) {

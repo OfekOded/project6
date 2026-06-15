@@ -1,0 +1,23 @@
+const crypto = require('crypto');
+
+// Simple salted password hashing using Node's built-in crypto (no external deps).
+// Stored format: "<salt-hex>:<hash-hex>". A fresh random salt per password means
+// two identical passwords produce different hashes.
+
+function hashPassword(plain) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.scryptSync(plain, salt, 64).toString('hex');
+  return `${salt}:${hash}`;
+}
+
+// Constant-time compare of `plain` against a stored "salt:hash" value.
+function verifyPassword(plain, stored) {
+  if (!stored || !stored.includes(':')) return false;
+  const [salt, hash] = stored.split(':');
+  const test = crypto.scryptSync(plain, salt, 64).toString('hex');
+  const a = Buffer.from(hash, 'hex');
+  const b = Buffer.from(test, 'hex');
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+module.exports = { hashPassword, verifyPassword };
