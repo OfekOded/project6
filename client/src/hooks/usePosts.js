@@ -19,7 +19,7 @@ export default function usePosts(userId, scope = 'mine') {
     try {
       setPosts(await getJson(listUrl()));
     } catch {
-      setLoadError('Could not load posts. Is the server running?');
+      setLoadError('Could not load posts.');
     } finally {
       setLoading(false);
     }
@@ -36,7 +36,7 @@ export default function usePosts(userId, scope = 'mine') {
         const data = await getJson(scope === 'all' ? '/posts' : `/posts?userId=${userId}`);
         if (active) setPosts(data);
       } catch {
-        if (active) setLoadError('Could not load posts. Is the server running?');
+        if (active) setLoadError('Could not load posts.');
       } finally {
         if (active) setLoading(false);
       }

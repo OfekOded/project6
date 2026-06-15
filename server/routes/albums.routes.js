@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// GET /albums/:id/photos  (nested, jsonplaceholder-style; supports the same list options)
+// GET /albums/:id/photos  
 router.get('/:id/photos', async (req, res) => {
   try {
     const id = parseId(req.params.id);

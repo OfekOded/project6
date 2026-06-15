@@ -1,7 +1,5 @@
 const pool = require('./connection');
 
-// Posts are returned together with their author (JOIN users), the same way comments are -
-// so the "All posts" view can show who wrote each one. user_id is still included for ownership checks.
 const POST_SELECT = `
   SELECT p.id, p.user_id, p.title, p.body, p.created_at,
          u.username AS user_username, u.name AS user_name

@@ -4,7 +4,7 @@ const postsQueries = require('../db/posts.queries');
 const { parseId } = require('../utils/validate');
 const router = express.Router();
 
-// GET /comments?postId=1  (flat jsonplaceholder-style; the nested version lives in posts.routes.js)
+// GET /comments?postId=1  
 router.get('/', async (req, res) => {
   try {
     const postId = parseId(req.query.postId);

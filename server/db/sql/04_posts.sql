@@ -1,4 +1,3 @@
--- Run order: 01 -> 02 -> 03 -> 04 -> 05  (users must exist first)
 USE fullstack6;
 
 CREATE TABLE posts (
@@ -10,8 +9,7 @@ CREATE TABLE posts (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Seed: two posts per user (user_id 1..4 come from 02_users_passwords.sql).
--- ids will auto-increment 1..8 in this exact order - 05_comments.sql relies on that.
+
 INSERT INTO posts (user_id, title, body) VALUES
   (1, 'First day with the project', 'Set up the repo and the database schema. Everything connects.'),
   (1, 'Thoughts on REST', 'A clean resource layout makes the client code almost write itself.'),

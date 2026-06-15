@@ -82,7 +82,7 @@ router.put('/:id', async (req, res) => {
     const post = await postsQueries.getPostById(id);
     if (!post) return res.status(404).json({ error: 'post not found' });
 
-    // Ownership check: the server is the real gatekeeper, not the hidden button.
+    // Ownership check
     if (post.user_id !== userId) {
       return res.status(403).json({ error: 'not your post' });
     }

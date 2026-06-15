@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS photos (
   FOREIGN KEY (album_id) REFERENCES albums(id) ON DELETE CASCADE
 );
 
--- Two albums per user (album ids 1..8 are referenced by the photos seed below).
 INSERT INTO albums (id, user_id, title) VALUES
   (1, 1, 'Project screenshots'),
   (2, 1, 'Team photos'),
@@ -28,7 +27,6 @@ INSERT INTO albums (id, user_id, title) VALUES
   (8, 4, 'Office plants')
 ON DUPLICATE KEY UPDATE user_id = VALUES(user_id), title = VALUES(title);
 
--- Three photos per album. url + thumbnail_url mirror the jsonplaceholder shape.
 INSERT INTO photos (album_id, title, url, thumbnail_url) VALUES
   (1, 'Login screen',        'https://picsum.photos/seed/p1/600/400',  'https://picsum.photos/seed/p1/150/100'),
   (1, 'Dashboard',           'https://picsum.photos/seed/p2/600/400',  'https://picsum.photos/seed/p2/150/100'),

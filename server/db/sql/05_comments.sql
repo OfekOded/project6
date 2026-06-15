@@ -10,7 +10,6 @@ CREATE TABLE comments (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Seed: a few comments across posts. post_id 1..8 come from 04_posts.sql, user_id 1..4 from 02.
 INSERT INTO comments (post_id, user_id, body) VALUES
   (1, 2, 'Nice, glad the setup went smoothly.'),
   (1, 3, 'Which MySQL version are you on?'),
